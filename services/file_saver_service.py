@@ -1,14 +1,12 @@
-
-
 class FileSavingService:
 
-    def __init__(self, file_to_load, storage):
-        self.storage = storage
-        self.file = file_to_load
+    def __init__(self):
+        self.storage = BlobStorage()
 
-    def save(self):
-        url = self.storage.save(self.file)
-        return url
+    def save(self, file_to_load):
+        blob = self.storage.save(file_to_load)
+        print(blob)
+        return blob
 
 
 class BlobStorage:
@@ -18,18 +16,12 @@ class BlobStorage:
     BLOB_NAME = 'testfile.wav'
 
     def __init__(self):
-        from azure.storage.blob import BlobClient, ContentSettings
-        self.content_settings = ContentSettings(content_type='audio/wav')
+        from azure.storage.blob import BlobClient
         self.blob = BlobClient.from_connection_string(conn_str=self.CONN_STRING,
-                                                 container_name=self.CONT_NAME,
-                                                 blob_name=self.BLOB_NAME)
+                                                      container_name=self.CONT_NAME,
+                                                      blob_name=self.BLOB_NAME)
 
     def save(self, file):
-        with open(file, 'rb') as data:
-            self.blob.upload_blob(data, content_type=self.content_settings)
+        # with open(file, 'rb') as data:
+        self.blob.upload_blob(file, overwrite=True, content_type='audio/wav')
 
-
-# upload = BlobStorage()
-# upload.save(r"C:\Users\Dzmitry_Shman\PycharmProjects\Kapuster\media\OSR_us_000_0010_8k_iCVjkpS.wav")
-
-property

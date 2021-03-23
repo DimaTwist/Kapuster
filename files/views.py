@@ -15,11 +15,9 @@ def upload(request):
 
         if form.is_valid():
             uploaded_file = request.FILES['file']
-            print(uploaded_file.file)
 
-            # storage = BlobStorage()
-            # saving = FileSavingService(uploaded_file, storage)
-            # url = saving.save()
+            saving_service = FileSavingService()
+            saving_service.save(uploaded_file)
 
             url = 'URL'
             return render(request, 'file_upload_form.html', {'url': url})
