@@ -13,9 +13,9 @@ def upload(request):
             print(uploaded_file.name, uploaded_file.content_type)
 
             saving_service = FileSavingService()
-            saving_service.save(uploaded_file)
+            url = saving_service.save(uploaded_file)
 
-            return render(request, 'file_upload_form.html', {'url': 'Successfully uploaded'})
+            return render(request, 'file_upload_form.html', {'url': url})
     else:
         form = UploadFileForm()
     return render(request, 'file_upload_form.html', {'form': form})

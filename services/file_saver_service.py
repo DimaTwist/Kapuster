@@ -4,7 +4,8 @@ class FileSavingService:
         self.storage = BlobStorage()
 
     def save(self, file_to_load):
-        self.storage.save(file_to_load)
+        url = self.storage.save(file_to_load)
+        return url
 
 
 class BlobStorage:
@@ -22,4 +23,4 @@ class BlobStorage:
     def save(self, file):
         self.blob = self.blob_service.get_blob_client(container=self.CONT_NAME, blob=file.name)
         self.blob.upload_blob(file, overwrite=True, content_type=file.content_type)
-
+        return f'https://speechrecognitionstorage.blob.core.windows.net/{self.CONT_NAME}/{file.name}'
