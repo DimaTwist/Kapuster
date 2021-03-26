@@ -1,26 +1,21 @@
 from django.shortcuts import render
-from services.file_saver_service import FileSavingService, BlobStorage
-# from django.core.files.storage import FileSystemStorage
-from django.core.files import uploadedfile
-
+from services.file_saver_service import FileSavingService
 from .forms import UploadFileForm
-import os
 
 
 def upload(request):
 
     if request.method == 'POST':
-
         form = UploadFileForm(request.POST, request.FILES)
 
         if form.is_valid():
             uploaded_file = request.FILES['file']
+            print(uploaded_file.name, uploaded_file.content_type)
 
             saving_service = FileSavingService()
             saving_service.save(uploaded_file)
 
-            url = 'URL'
-            return render(request, 'file_upload_form.html', {'url': url})
+            return render(request, 'file_upload_form.html', {'url': 'Successfully uploaded'})
     else:
         form = UploadFileForm()
     return render(request, 'file_upload_form.html', {'form': form})
