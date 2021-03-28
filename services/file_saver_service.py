@@ -14,13 +14,13 @@ class BlobStorage:
     CONT_NAME = 'files'
 
     def __init__(self):
-        from azure.storage.blob import BlobServiceClient  # , BlobClient
+        from azure.storage.blob import BlobServiceClient
         # self.blob = BlobClient.from_connection_string(conn_str=self.CONN_STRING,
         #                                               container_name=self.CONT_NAME,
         #                                               blob_name=self.blob_name)
         self.blob_service = BlobServiceClient.from_connection_string(conn_str=self.CONN_STRING)
 
     def save(self, file):
-        self.blob = self.blob_service.get_blob_client(container=self.CONT_NAME, blob=file.name)
-        self.blob.upload_blob(file, overwrite=True, content_type=file.content_type)
-        return f'https://speechrecognitionstorage.blob.core.windows.net/{self.CONT_NAME}/{file.name}'
+        blob = self.blob_service.get_blob_client(container=self.CONT_NAME, blob=file.name)
+        blob.upload_blob(file, overwrite=True, content_type=file.content_type)
+        return blob.url
